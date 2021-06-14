@@ -1,9 +1,14 @@
-const hello = async(req, res) => {
-    try {
-        res.json('All work');
-    } catch(e) {
-        console.log(e);
-    }
-}
+const db = require('../db/database');
 
-module.exports = {hello}
+const hello = async (req, res) => {
+  try {
+    const data = await db.query('SELECT * FROM restaurants');
+    res.json(data);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+module.exports = {
+  hello,
+};
