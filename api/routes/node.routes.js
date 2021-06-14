@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const controllers = require('../controllers/node.controllets');
+const controllers = require('../controllers/restaurants.controllets');
 
-router.get('/', controllers.hello);
+router.get('/restaurants', controllers.getRestaurants);
+router.get('/restaurantsCousine', controllers.getRestaurantsCuisine);
 
 module.exports = router;
