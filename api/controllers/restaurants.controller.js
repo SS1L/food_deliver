@@ -32,8 +32,10 @@ const getRestaurantsCuisine = async (req, res) => {
     const restaurantsInfo = await db.query(`SELECT * FROM restaurants WHERE cuisine='${cuisine}'`);
     if (!restaurantsInfo.rows) throw new SyntaxError('Can`t find type any restaurnats');
 
+    const restaurantsCuisine = restaurantsInfo?.rows;
+    if (!restaurantsCuisine) throw new SyntaxError('Can`t find data');
     // const getRestaurantsInfo = restaurantsInfo.rows;
-    res.json(restaurantsInfo.rows);
+    res.status(200).json(restaurantsCuisine);
   } catch (e) {
     if (e.name === 'SyntaxError') {
       res.status(400).json(e.message);
@@ -43,7 +45,37 @@ const getRestaurantsCuisine = async (req, res) => {
   }
 };
 
+// const getRestaurantById = async (req, res) => {
+//   try {
+//     const { name } = req.body;
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
+
+const createNewRestaurant = async (req, res) => {
+  try {
+    const { name, describe, address, cuisine } = req.body;
+    const newRestaurant = await db.query(`INSERT INTO restaurants (name, describe, address, cuisine) 
+                        VALUES ($1, $2, $3, $4) RETURNING name, describe, address, cuisine`, [name, describe, address, cuisine]);
+
+    res.json({ data: newRestaurant.rows });
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};
+
+// const updateRestaurant = async (req, res) => {
+
+// };
+
+// const deleteRestaurant = async (req, res) => {
+
+// };
+
 module.exports = {
   getRestaurants,
   getRestaurantsCuisine,
+  // getRestaurantById,
+  createNewRestaurant,
 };
