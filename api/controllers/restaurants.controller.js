@@ -54,7 +54,7 @@ const getRestaurantById = async (req, res) => {
 
     res.json(restaurantInfo.rows);
   } catch (e) {
-    console.log(e);
+    res.json(e);
   }
 };
 
@@ -70,16 +70,20 @@ const createNewRestaurant = async (req, res) => {
   }
 };
 
-// const updateRestaurant = async (req, res) => {
-//   try {
-//     const id = req.params;
-//     const { name, describe, address, cuisine } = req.body;
+const updateRestaurant = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, describe, address, cuisine } = req.body;
 
-//     res.json(id);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
+    // const findRestaurant = await db.query(`SELECT `)
+    // need fix
+    await db.query('UPDATE restaurants SET name=$1, describe = $2, address = $3, cuisine = $4 WHERE restaurant_id=$5', [name, describe, address, cuisine, id]);
+
+    res.json('Restaurant changed');
+  } catch (e) {
+    res.status(500).json(e.message);
+  }
+};
 
 const deleteRestaurant = async (req, res) => {
   try {
@@ -102,6 +106,6 @@ module.exports = {
   getRestaurantsCuisine,
   getRestaurantById,
   createNewRestaurant,
-  // updateRestaurant,
+  updateRestaurant,
   deleteRestaurant,
 };
