@@ -45,17 +45,18 @@ const getRestaurantsCuisine = async (req, res) => {
   }
 };
 
-// const getRestaurantById = async (req, res) => {
-//   try {
-//     const { id } = req.body;
-//     // need fix
-//     const restaurantInfo = await db.query('SELECT * FROM restaurants WHERE restaurant_id=');
+const getRestaurantById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // need fix
+    const restaurantInfo = await db.query(`SELECT * FROM restaurants WHERE restaurant_id=${id}`);
+    if (!restaurantInfo.rowCount) return res.status(500).json('Can`t find a restaurant');
 
-//     res.json(restaurantInfo);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
+    res.json(restaurantInfo.rows);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const createNewRestaurant = async (req, res) => {
   try {
@@ -99,7 +100,7 @@ const deleteRestaurant = async (req, res) => {
 module.exports = {
   getRestaurants,
   getRestaurantsCuisine,
-  // getRestaurantById,
+  getRestaurantById,
   createNewRestaurant,
   // updateRestaurant,
   deleteRestaurant,
