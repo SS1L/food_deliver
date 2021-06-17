@@ -47,7 +47,11 @@ const getRestaurantsCuisine = async (req, res) => {
 
 // const getRestaurantById = async (req, res) => {
 //   try {
-//     const { name } = req.body;
+//     const { id } = req.body;
+//     // need fix
+//     const restaurantInfo = await db.query('SELECT * FROM restaurants WHERE restaurant_id=');
+
+//     res.json(restaurantInfo);
 //   } catch (e) {
 //     console.log(e);
 //   }
@@ -59,23 +63,44 @@ const createNewRestaurant = async (req, res) => {
     const newRestaurant = await db.query(`INSERT INTO restaurants (name, describe, address, cuisine) 
                         VALUES ($1, $2, $3, $4) RETURNING name, describe, address, cuisine`, [name, describe, address, cuisine]);
 
-    res.json({ data: newRestaurant.rows });
+    res.json(newRestaurant.rows);
   } catch (e) {
     res.status(500).json(e);
   }
 };
 
 // const updateRestaurant = async (req, res) => {
+//   try {
+//     const id = req.params;
+//     const { name, describe, address, cuisine } = req.body;
 
+//     res.json(id);
+//   } catch (e) {
+//     console.log(e);
+//   }
 // };
 
-// const deleteRestaurant = async (req, res) => {
+const deleteRestaurant = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query(`DELETE FROM restaurants WHERE restaurant_id=${id} RETURNING name, describe, address, cuisine`);
+    if (!result.rowCount) throw new SyntaxError('Can`t find restaurant');
 
-// };
+    res.json(result.rows);
+  } catch (e) {
+    if (e.name === 'SyntaxError') {
+      res.json(e.message);
+    } else {
+      res.json(e);
+    }
+  }
+};
 
 module.exports = {
   getRestaurants,
   getRestaurantsCuisine,
   // getRestaurantById,
   createNewRestaurant,
+  // updateRestaurant,
+  deleteRestaurant,
 };
