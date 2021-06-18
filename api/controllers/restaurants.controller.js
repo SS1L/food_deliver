@@ -6,16 +6,7 @@ const getRestaurants = async (req, res) => {
     const restaurantsInfo = await db.query('SELECT * FROM restaurants');
     if (!restaurantsInfo.rows) throw new SyntaxError('error');
 
-    const checkedRestaurants = restaurantsInfo?.rows;
-    if (!checkedRestaurants) throw new SyntaxError('Can`t find results');
-
-    const sendRestauratns = [];
-    checkedRestaurants.forEach((item) => {
-      delete item.restaurant_id;
-      sendRestauratns.push(item);
-    });
-
-    res.status(200).json(sendRestauratns);
+    res.status(200).json(restaurantsInfo.rows);
   } catch (e) {
     if (e.name === 'SyntaxError') {
       res.status(400).json(e.message);
@@ -32,10 +23,8 @@ const getRestaurantsCuisine = async (req, res) => {
     const restaurantsInfo = await db.query(`SELECT * FROM restaurants WHERE cuisine='${cuisine}'`);
     if (!restaurantsInfo.rows) throw new SyntaxError('Can`t find type any restaurnats');
 
-    const restaurantsCuisine = restaurantsInfo?.rows;
-    if (!restaurantsCuisine) throw new SyntaxError('Can`t find data');
     // const getRestaurantsInfo = restaurantsInfo.rows;
-    res.status(200).json(restaurantsCuisine);
+    res.status(200).json(restaurantsInfo.rows);
   } catch (e) {
     if (e.name === 'SyntaxError') {
       res.status(400).json(e.message);
