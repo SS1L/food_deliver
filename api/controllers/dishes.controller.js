@@ -19,9 +19,16 @@ const getDishes = async (req, res) => {
 const getDishesId = async (req, res) => {
   try {
     const { id } = req.params;
-    res.json(id);
+    const dishes = await db.query(`SELECT name, describe, price FROM dishes WHERE restaurant_id=${id}`);
+    if (!dishes.rowCount) throw new SyntaxError('Someting went wrong');
+
+    res.json(dishes.rows);
   } catch (e) {
-    res.json(e);
+    if (e.name === 'SyntaxError') {
+      res.json(e.message);
+    } else {
+      res.json(e);
+    }
   }
 };
 
@@ -44,9 +51,17 @@ const createDish = async (req, res) => {
   }
 };
 
-// const updateDish = async(req, res) => {
+const updateDish = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, describe, price } = req.body;
 
-// };
+    await db.query('UPDATE dishes SET name=$1, describe=$2, price=$3 WHERE dish_id=$4', [name, describe, price, id]);
+    res.json('Dish change');
+  } catch (e) {
+    res.status(500).json(e.message);
+  }
+};
 
 const deleteDish = async (req, res) => {
   try {
@@ -68,5 +83,6 @@ module.exports = {
   getDishes,
   getDishesId,
   createDish,
+  updateDish,
   deleteDish,
 };
