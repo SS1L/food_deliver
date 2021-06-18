@@ -27,9 +27,9 @@ const getCouriersId = async (req, res) => {
 
 const createNewCourier = async (req, res) => {
   try {
-    const { name, surname, courier_phone } = req.body;
+    const { name, surname, courierPhone } = req.body;
     const newCourier = await db.query(`INSERT INTO courier (name, surname, courier_phone) 
-                        VALUES ($1, $2, $3) RETURNING name, surname, courier_phone`, [name, surname, courier_phone]);
+                        VALUES ($1, $2, $3) RETURNING name, surname, courier_phone`, [name, surname, courierPhone]);
 
     res.json(newCourier.rows);
   } catch (e) {
@@ -37,8 +37,37 @@ const createNewCourier = async (req, res) => {
   }
 };
 
+const updateCourier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {name, surname, courierPhone} = req.body;
+
+    res.json('All work');
+  } catch (e) {
+    res.json(e);
+  }
+};
+
+const deleteCourier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCourier = await db.query(`DELETE FROM courier WHERE courier_id=${id} RETURNING name, surname, courier_phone`);
+    if (!deletedCourier.rowCount) throw new SyntaxError('Can`t find a courier');
+
+    res.status(200).json(deletedCourier.rows);
+  } catch (e) {
+    if (e.name === 'SyntaxError') {
+      res.status(500).json(e.message);
+    } else {
+      res.status(500).json(e.message);
+    }
+  }
+};
+
 module.exports = {
   getCouriers,
   getCouriersId,
   createNewCourier,
+  updateCourier,
+  deleteCourier,
 };

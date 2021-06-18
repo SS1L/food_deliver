@@ -1,0 +1,14 @@
+"filename", "language", "JSON", "JavaScript", "comment", "blank", "total"
+"/home/ss1l/Food Deliver back/api/controllers/courier.controller.js", "JavaScript", 0, 37, 0, 8, 45
+"/home/ss1l/Food Deliver back/api/controllers/menu.controller.js", "JavaScript", 0, 9, 0, 3, 12
+"/home/ss1l/Food Deliver back/api/controllers/restaurants.controller.js", "JavaScript", 0, 89, 6, 17, 112
+"/home/ss1l/Food Deliver back/api/db/database.js", "JavaScript", 0, 12, 0, 5, 17
+"/home/ss1l/Food Deliver back/api/routes/couriers.routes.js", "JavaScript", 0, 8, 0, 3, 11
+"/home/ss1l/Food Deliver back/api/routes/dishes.routes.js", "JavaScript", 0, 7, 0, 3, 10
+"/home/ss1l/Food Deliver back/api/routes/orders.routes.js", "JavaScript", 0, 6, 0, 3, 9
+"/home/ss1l/Food Deliver back/api/routes/restaurants.routes.js", "JavaScript", 0, 9, 0, 3, 12
+"/home/ss1l/Food Deliver back/api/routes/users.routes.js", "JavaScript", 0, 4, 0, 3, 7
+"/home/ss1l/Food Deliver back/app.js", "JavaScript", 0, 14, 0, 6, 20
+"/home/ss1l/Food Deliver back/package-lock.json", "JSON", 5144, 0, 0, 1, 5145
+"/home/ss1l/Food Deliver back/package.json", "JSON", 24, 0, 0, 1, 25
+"Total", "-", 5168, 195, 6, 56, 5425
