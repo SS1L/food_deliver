@@ -1,9 +1,10 @@
 const router = require('express').Router();
+const dish = require('../controllers/dishes.controller');
 
-router.get('/dishes');
-router.get('/dishes/:id');
-router.post('/dishes');
+router.get('/dishes', dish.getDishes);
+router.get('/dishes/:id', dish.getDishesId);
+router.post('/dishes', dish.createDish);
 router.put('/dishes/:id');
-router.delete('/dishes/:id');
+router.delete('/dishes/:id', dish.deleteDish);
 
 module.exports = router;
