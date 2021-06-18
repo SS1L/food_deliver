@@ -40,11 +40,18 @@ const createNewCourier = async (req, res) => {
 const updateCourier = async (req, res) => {
   try {
     const { id } = req.params;
-    const {name, surname, courierPhone} = req.body;
+    const { name, surname, courierPhone } = req.body;
 
-    res.json('All work');
+    const newCourier = await db.query('UPDATE courier SET name=$1, surname=$2, courier_phone=$3 WHERE courier_id=$4', [name, surname, courierPhone, id]);
+    if (!newCourier.rowCount) throw new SyntaxError('Can`t find a courier');
+
+    res.json('Courier update');
   } catch (e) {
-    res.json(e);
+    if (e.name === 'SyntaxError') {
+      res.status(500).json(e.message);
+    } else {
+      res.json(e);
+    }
   }
 };
 
