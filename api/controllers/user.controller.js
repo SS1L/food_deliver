@@ -25,6 +25,19 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, surname, address, userPhone } = req.body;
+
+    await db.query('UPDATE users SET name=$1, surname=$2, address=$3, user_phone=$4 WHERE user_id=$5', [name, surname, address, userPhone, id]);
+
+    res.status(200).json('User updated');
+  } catch (e) {
+    res.json({ error: e });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
