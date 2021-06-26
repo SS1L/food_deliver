@@ -2,7 +2,11 @@ const db = require('../db/database');
 
 const getOrders = async (req, res) => {
   try {
-    res.status(200).json('all work');
+    const order = await db.query('SELECT * FROM orders');
+    const checkedOrders = order.rows;
+    if (!checkedOrders) throw new SyntaxError('Something went wrong');
+
+    res.status(200).json(checkedOrders);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -14,16 +18,16 @@ const getOrderId = async (req, res) => {
     const { id } = req.params;
     const order = await db.query(`SELECT  orders.order_id, user_id, restaurant_id, courier_id, total_price,dish_id  FROM orders INNER JOIN order_dish ON orders.order_id = order_dish.order_id WHERE orders.order_id=${id}`);
     if (!order.rowCount) throw new SyntaxError('Someting went wrong');
-    console.log(order.rows);
+
     const groupOrders = order.rows;
     const newDishId = [];
-    groupOrders.forEach((order) => {
-      newDishId.push(order.dish_id);
+    groupOrders.forEach((element) => {
+      newDishId.push(element.dish_id);
     });
-    console.log(groupOrders)
+    console.log(groupOrders);
     // const  {orderId: groupOrders[0], } = newData;
-    res.status(200).json( {
-      orderId: groupOrders[0].order_id, 
+    res.status(200).json({
+      orderId: groupOrders[0].order_id,
       userId: groupOrders[0].user_id,
       restaurantId: groupOrders[0].restaurant_id,
       courierId: groupOrders[0].courier_id,
