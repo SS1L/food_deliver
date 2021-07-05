@@ -1,23 +1,26 @@
 const Sequelize = require('sequelize');
 const db = require('../db/database');
 
-const restaurants = db.define('restaurants', {
+const dishes = db.define('dishes', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
+  },
+  restaurant_id: {
+    type: Sequelize.INTEGER,
   },
   name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  address: {
+  describe: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  cousine: {
+  price: {
     type: Sequelize.STRING,
     allowNull: false,
   },
 });
 
-module.exports = restaurants;
+module.exports = dishes;
