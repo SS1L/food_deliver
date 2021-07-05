@@ -1,9 +1,11 @@
 const db = require('../db/database');
+const restaurant = require('../models/restaurant');
 
 const getRestaurants = async (req, res) => {
   try {
     // change select
-    const restaurantsInfo = await db.query('SELECT * FROM restaurants');
+    // const restaurantsInfo = await db.query('SELECT * FROM restaurants');
+    const restaurantsInfo = await restaurant.findAll();
     if (!restaurantsInfo.rows) throw new SyntaxError('error');
 
     res.status(200).json(restaurantsInfo.rows);
