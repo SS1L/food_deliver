@@ -23,5 +23,5 @@ app.use('/api', user);
 app.use('/api', order);
 
 app.listen(5000, () => {
-  console.log('Run server');
+  console.log('Work');
 });

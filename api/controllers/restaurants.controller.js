@@ -4,10 +4,8 @@ const Restaurant = require('../models/restaurant.model');
 const getRestaurants = async (req, res) => {
   try {
     // change select
-    const restaurantsInfo = await Restaurant.findAll({ attributes: ['id'] });
-    if (!restaurantsInfo.rows) throw new SyntaxError('error');
-
-    res.status(200).json(restaurantsInfo.rows);
+    const restaurantsInfo = await Restaurant.findAll();
+    res.status(200).json(restaurantsInfo);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
