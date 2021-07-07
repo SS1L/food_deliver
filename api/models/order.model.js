@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const db = require('../api/db/database');
+const sequelize = require('../db/database');
 
-const order = db.define('orders', {
+const Order = sequelize.define('orders', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -17,8 +17,9 @@ const order = db.define('orders', {
   },
   total_price: {
     type: Sequelize.DECIMAL,
-  }, {
-    timestamps: false,
+  },
+}, {
+  timestamps: false,
 });
 
-module.exports = order;
+module.exports = Order;

@@ -22,13 +22,6 @@ app.use('/api', dishes);
 app.use('/api', user);
 app.use('/api', order);
 
-(async () => {
-  try {
-    await sequelize.sync(
-      { force: false },
-    );
-    app.listen(process.env.PORT);
-  } catch (error) {
-    console.log(error);
-  }
-})();
+app.listen(5000, () => {
+  console.log('Run server');
+});

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const db = require('../api/db/database');
+const sequelize = require('../db/database');
 
-const users = db.define('users', {
+const Users = sequelize.define('users', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -21,8 +21,9 @@ const users = db.define('users', {
   user_phone: {
     type: Sequelize.STRING,
     allowNull: false,
-  }, {
-    timestamps: false,
+  },
+}, {
+  timestamps: false,
 });
 
-module.exports = users;
+module.exports = Users;

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const db = require('../api/db/database');
+const sequelize = require('../db/database');
 
-const dishes = db.define('dishes', {
+const Dish = sequelize.define('dishes', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -20,8 +20,9 @@ const dishes = db.define('dishes', {
   price: {
     type: Sequelize.STRING,
     allowNull: false,
-  }, {
-    timestamps: false,
+  },
+}, {
+  timestamps: false,
 });
 
-module.exports = dishes;
+module.exports = Dish;
