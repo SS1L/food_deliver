@@ -11,7 +11,8 @@ module.exports = {
         primaryKey: true,
       },
       total_price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
       },
       restaurant_id: {
         type: Sequelize.INTEGER,
@@ -31,7 +32,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      users_id: {
+      user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'users',
@@ -52,6 +53,7 @@ module.exports = {
       },
     });
   },
+
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable(tableName);
   },

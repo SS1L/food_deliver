@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable arrow-body-style */
 const tableName = 'restaurants';
 
 module.exports = {
@@ -12,6 +14,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete(tableName, null, {}); 
+    return queryInterface.bulkDelete(tableName, null, {});
   },
 };
