@@ -1,5 +1,5 @@
 const db = require('../db/database');
-const restaurant = require('../models/restaurant');
+const restaurant = require('../models/restaurant.model');
 
 const getRestaurants = async (req, res) => {
   try {

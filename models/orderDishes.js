@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../db/database');
+const db = require('../api/db/database');
 
 const orderDishes = db.define('orderDishes', {
   restaurant_id: {

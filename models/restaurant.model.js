@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../db/database');
+const db = require('../api/db/database');
 
 const restaurants = db.define('restaurants', {
   id: {
@@ -17,7 +17,8 @@ const restaurants = db.define('restaurants', {
   cousine: {
     type: Sequelize.STRING,
     allowNull: false,
-  },
+  }, {
+    timestamps: false,
 });
 
 module.exports = restaurants;

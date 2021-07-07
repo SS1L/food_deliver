@@ -1,13 +1,10 @@
 const Sequelize = require('sequelize');
-const db = require('../db/database');
+const db = require('../api/db/database');
 
-const couriers = db.define('couriers', {
+const users = db.define('users', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-  },
-  order_id: {
-    type: Sequelize.INTEGER,
   },
   name: {
     type: Sequelize.STRING,
@@ -17,10 +14,15 @@ const couriers = db.define('couriers', {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  courier_phone: {
+  address: {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  user_phone: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  }, {
+    timestamps: false,
 });
 
-module.exports = couriers;
+module.exports = users;

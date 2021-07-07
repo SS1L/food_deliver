@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../db/database');
+const db = require('../api/db/database');
 
 const dishes = db.define('dishes', {
   id: {
@@ -20,7 +20,8 @@ const dishes = db.define('dishes', {
   price: {
     type: Sequelize.STRING,
     allowNull: false,
-  },
+  }, {
+    timestamps: false,
 });
 
 module.exports = dishes;
