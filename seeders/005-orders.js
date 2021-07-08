@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
 const tableName = 'orders';
