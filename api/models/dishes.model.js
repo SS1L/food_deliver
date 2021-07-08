@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db/database');
+const Restaurant = require('./restaurant.model');
 
 const Dish = sequelize.define('dishes', {
   id: {
@@ -8,6 +9,7 @@ const Dish = sequelize.define('dishes', {
   },
   restaurant_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
   },
   name: {
     type: Sequelize.STRING,
@@ -24,5 +26,7 @@ const Dish = sequelize.define('dishes', {
 }, {
   timestamps: false,
 });
+
+Dish.hasMany(Restaurant, { foreignKey: 'id', sourceKey: 'restaurant_id' });
 
 module.exports = Dish;

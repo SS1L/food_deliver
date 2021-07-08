@@ -1,12 +1,11 @@
-const db = require('../db/database');
+/* eslint-disable comma-dangle */
+const Couriers = require('../models/couriers.model');
 
 const getCouriers = async (req, res) => {
   try {
-    const couriers = await db.query('SELECT * FROM courier');
-    const checkedCourier = couriers.rows;
-    if (!checkedCourier) throw new SyntaxError('Something went wrong');
+    const couriers = await Couriers.findAll({ includes: { all: true } });
 
-    res.status(200).json(checkedCourier);
+    res.status(200).json({ data: couriers });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -15,11 +14,11 @@ const getCouriers = async (req, res) => {
 const getCouriersId = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
-    const courier = await db.query(`SELECT * FROM courier WHERE courier_id=${id}`);
-    if (!courier.rows) throw new SyntaxError('Something went wrong');
 
-    res.status(200).json(courier.rows);
+    const courier = await Couriers.findOne({ where: { id } });
+    if (!courier) throw new SyntaxError("Can't find this courier");
+
+    res.status(200).json({ data: courier });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -28,10 +27,12 @@ const getCouriersId = async (req, res) => {
 const createNewCourier = async (req, res) => {
   try {
     const { name, surname, courierPhone } = req.body;
-    const newCourier = await db.query(`INSERT INTO courier (name, surname, courier_phone) 
-                        VALUES ($1, $2, $3) RETURNING name, surname, courier_phone`, [name, surname, courierPhone]);
 
-    res.status(200).json(newCourier.rows);
+    const newCourier = await Couriers.create({
+      name, surname, courier_phone: courierPhone
+    }, { fields: ['name', 'surname', 'courier_phone'] });
+
+    res.status(200).json({ message: 'New courier created', data: newCourier });
   } catch (e) {
     res.status(500).json({ error: e });
   }
@@ -42,10 +43,12 @@ const updateCourier = async (req, res) => {
     const { id } = req.params;
     const { name, surname, courierPhone } = req.body;
 
-    const newCourier = await db.query('UPDATE courier SET name=$1, surname=$2, courier_phone=$3 WHERE courier_id=$4', [name, surname, courierPhone, id]);
-    if (!newCourier.rowCount) throw new SyntaxError('Can`t find a courier');
+    const changeCourier = await Couriers.update({
+      name, surname, courier_phone: courierPhone
+    }, { where: { id } });
+    if (changeCourier[0] === 0) throw new SyntaxError("Can't find this courier ");
 
-    res.status(200).json('Courier update');
+    res.status(200).json({ message: 'Courier updated' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -54,15 +57,17 @@ const updateCourier = async (req, res) => {
 const deleteCourier = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedCourier = await db.query(`DELETE FROM courier WHERE courier_id=${id} RETURNING name, surname, courier_phone`);
-    if (!deletedCourier.rowCount) throw new SyntaxError('Can`t find a courier');
 
-    res.status(200).json(deletedCourier.rows);
+    const courier = await Couriers.destroy({ where: { id } });
+    if (!courier) throw new SyntaxError("Can't find this courier");
+
+    res.status(200).json({ message: 'Courier deleted' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
 
+// need fix
 const getCourierOrder = async (req, res) => {
   try {
     const { id } = req.params;

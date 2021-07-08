@@ -1,14 +1,13 @@
 const db = require('../db/database');
+const Orders = require('../models/order.model');
 
 const getOrders = async (req, res) => {
   try {
-    const order = await db.query('SELECT * FROM orders');
-    const checkedOrders = order.rows;
-    if (!checkedOrders) throw new SyntaxError('Something went wrong');
+    const order = await Orders.findAll({ includes: { all: true } });
 
-    res.status(200).json(checkedOrders);
+    res.status(200).json({ data: order });
   } catch (e) {
-    res.status(500).json(e);
+    res.status(500).json({ error: e.message });
   }
 };
 
@@ -57,7 +56,6 @@ const createOrder = async (req, res) => {
     data.forEach((elemet) => {
       if (data[0].restaurant_id !== restaurantId) throw new SyntaxError('You can`t order in many restaurant');
       totalPrice += +elemet.price.replace('$', '');
-    //   console.log(parseFloat(elemet.price.replace('$', '')));
     });
 
     const d = await db.query(`INSERT INTO orders (user_id, restaurant_id, courier_id, total_price)
@@ -79,12 +77,10 @@ const createOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
-    const deleted = await db.query(`DELETE FROM orders WHERE order_id=${id}`);
-    if (!deleted.rowCount) throw new SyntaxError('Can`t find a order');
+    const order = await Orders.destroy({ where: { id } });
+    if (!order) throw new SyntaxError("Can't find any order");
 
-    // await db.query(`DELETE FROM order_dish WHERE order_id=${ id }`);
-    res.status(200).json('Order deleted');
+    res.status(200).json({ message: 'Order deleted' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

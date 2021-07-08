@@ -6,9 +6,6 @@ const Courier = sequelize.define('couriers', {
     type: Sequelize.INTEGER,
     primaryKey: true,
   },
-  order_id: {
-    type: Sequelize.INTEGER,
-  },
   name: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -22,7 +19,7 @@ const Courier = sequelize.define('couriers', {
     allowNull: false,
   },
 }, {
-  timespas: false,
+  timestamps: false,
 });
 
 module.exports = Courier;

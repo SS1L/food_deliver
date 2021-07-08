@@ -1,8 +1,10 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable comma-dangle */
 const Restaurant = require('../models/restaurant.model');
 
 const getRestaurants = async (req, res) => {
   try {
-    const restaurantsInfo = await Restaurant.findAll();
+    const restaurantsInfo = await Restaurant.findAll({ include: { all: true } });
 
     res.status(200).json({ data: restaurantsInfo });
   } catch (e) {
@@ -24,7 +26,8 @@ const getRestaurantsCuisine = async (req, res) => {
 const getRestaurantById = async (req, res) => {
   try {
     const { id } = req.params;
-    const restaurantInfo = await Restaurant.findOne({ where: { id } });
+    const restaurantInfo = await Restaurant.findByPk(id);
+    if (!restaurantInfo) throw new SyntaxError("Can't find any restaurant");
 
     res.status(200).json({ data: restaurantInfo });
   } catch (e) {
@@ -52,7 +55,7 @@ const updateRestaurant = async (req, res) => {
     const { name, describe, address, cousine } = req.body;
 
     const restaurant = await Restaurant.update({
-      name, describe, address, cousine 
+      name, describe, address, cousine
     },
     { where: { id } });
     if (restaurant[0] === 0) throw new SyntaxError("Can't find this id");
