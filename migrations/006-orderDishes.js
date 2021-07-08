@@ -5,6 +5,11 @@ const tableName = 'order_dishes';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable(tableName, {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       order_id: {
         type: Sequelize.INTEGER,
         references: {

@@ -23,15 +23,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      dish_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'dishes',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      },
       user_id: {
         type: Sequelize.INTEGER,
         references: {
@@ -43,7 +34,7 @@ module.exports = {
       },
       courier_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'couriers',
           key: 'id',

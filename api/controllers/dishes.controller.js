@@ -26,7 +26,6 @@ const getDishesId = async (req, res) => {
   }
 };
 
-// need fix
 const createDish = async (req, res) => {
   try {
     const { restaurantId, name, describe, price } = req.body;
