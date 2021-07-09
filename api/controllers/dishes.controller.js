@@ -1,11 +1,13 @@
-const db = require('../db/database');
+/* eslint-disable object-curly-newline */
+/* eslint-disable comma-dangle */
+const Dish = require('../models/dishes.model');
+const Restaurant = require('../models/restaurant.model');
 
 const getDishes = async (req, res) => {
   try {
-    const allDishes = await db.query('SELECT * FROM dishes');
-    if (!allDishes.rows) throw new SyntaxError('Error');
+    const allDishes = await Dish.findAll({ includes: { all: true } });
 
-    res.status(200).json(allDishes.rows);
+    res.status(200).json({ data: allDishes });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -15,10 +17,10 @@ const getDishes = async (req, res) => {
 const getDishesId = async (req, res) => {
   try {
     const { id } = req.params;
-    const dishes = await db.query(`SELECT name, describe, price FROM dishes WHERE restaurant_id=${id}`);
-    if (!dishes.rowCount) throw new SyntaxError('Someting went wrong');
+    const dishes = await Dish.findByPk(id);
+    if (!dishes.length) throw new SyntaxError("Can't find any information");
 
-    res.status(200).json(dishes.rows);
+    res.status(200).json(dishes);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -27,13 +29,13 @@ const getDishesId = async (req, res) => {
 const createDish = async (req, res) => {
   try {
     const { restaurantId, name, describe, price } = req.body;
-    const checkRestaurant = await db.query(`SELECT restaurant_id FROM restaurants WHERE restaurant_id=${restaurantId}`);
-    if (!checkRestaurant.rowCount) throw new SyntaxError('Can`t find a restaurant');
+    const findRestaurant = await Restaurant.findByPk(restaurantId);
+    if (!findRestaurant) throw new SyntaxError("Can't find restaurant");
+    const newDish = await Dish.create({
+      name, describe, price, restaurant_id: restaurantId
+    }, { fields: ['name', 'describe', 'price', 'restaurant_id'] });
 
-    const newDish = await db.query(`INSERT INTO dishes (restaurant_id, name, describe, price)
-                  VALUES ($1, $2, $3, $4) RETURNING name, describe, price`, [restaurantId, name, describe, price]);
-
-    res.status(200).json(newDish.rows);
+    res.status(200).json({ data: newDish });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -43,9 +45,12 @@ const updateDish = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, describe, price } = req.body;
+    const dish = await Dish.update({
+      name, describe, price
+    }, { where: { id } });
+    if (dish[0] === 0) throw new SyntaxError("Can't find any dish");
 
-    await db.query('UPDATE dishes SET name=$1, describe=$2, price=$3 WHERE dish_id=$4', [name, describe, price, id]);
-    res.status(200).json('Dish change');
+    res.status(200).json({ data: dish });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -54,10 +59,10 @@ const updateDish = async (req, res) => {
 const deleteDish = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedDish = await db.query(`DELETE FROM dishes WHERE dish_id=${id} RETURNING name, describe, price`);
-    if (!deletedDish.rowCount) throw new SyntaxError('Can`t find a dish');
+    const dish = Dish.destroy({ where: { id } });
+    if (!dish) throw new SyntaxError("Can't find any dish");
 
-    res.status(200).json(deletedDish.rows);
+    res.status(200).json({ message: 'Dish deleted' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

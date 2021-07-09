@@ -3,12 +3,13 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const sequelize = require('./db/database');
 
-const restaurants = require('./api/routes/restaurants.routes');
-const couriers = require('./api/routes/couriers.routes');
-const dishes = require('./api/routes/dishes.routes');
-const user = require('./api/routes/users.routes');
-const order = require('./api/routes/orders.routes');
+const restaurants = require('./routes/restaurants.routes');
+const couriers = require('./routes/couriers.routes');
+const dishes = require('./routes/dishes.routes');
+const user = require('./routes/users.routes');
+const order = require('./routes/orders.routes');
 
 dotenv.config();
 
@@ -22,5 +23,5 @@ app.use('/api', user);
 app.use('/api', order);
 
 app.listen(5000, () => {
-  console.log('All work');
+  console.log('Work');
 });
