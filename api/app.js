@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const sequelize = require('./db/database');
 
 const restaurants = require('./routes/restaurants.routes');
 const couriers = require('./routes/couriers.routes');
