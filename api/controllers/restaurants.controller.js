@@ -13,8 +13,8 @@ const getRestaurants = async (req, res) => {
 };
 
 const getRestaurantsCuisine = async (req, res) => {
+  const { cousine } = req.body;
   try {
-    const { cousine } = req.body;
     const restaurantsInfo = await Restaurant.findAll({ where: { cousine } });
 
     res.status(200).json({ data: restaurantsInfo });
@@ -24,8 +24,8 @@ const getRestaurantsCuisine = async (req, res) => {
 };
 
 const getRestaurantById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const restaurantInfo = await Restaurant.findByPk(id);
     if (!restaurantInfo) throw new SyntaxError("Can't find any restaurant");
 
@@ -36,8 +36,8 @@ const getRestaurantById = async (req, res) => {
 };
 
 const createNewRestaurant = async (req, res) => {
+  const { name, describe, address, cousine } = req.body;
   try {
-    const { name, describe, address, cousine } = req.body;
     const newRestaurant = await Restaurant.create({
       name, describe, address, cousine
     },
@@ -50,10 +50,9 @@ const createNewRestaurant = async (req, res) => {
 };
 
 const updateRestaurant = async (req, res) => {
+  const { id } = req.params;
+  const { name, describe, address, cousine } = req.body;
   try {
-    const { id } = req.params;
-    const { name, describe, address, cousine } = req.body;
-
     const restaurant = await Restaurant.update({
       name, describe, address, cousine
     },
@@ -67,9 +66,8 @@ const updateRestaurant = async (req, res) => {
 };
 
 const deleteRestaurant = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     const restaurant = await Restaurant.destroy({ where: { id } });
     if (!restaurant) throw new SyntaxError("Can't delete this restaurant");
 

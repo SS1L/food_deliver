@@ -13,8 +13,8 @@ const getUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const user = await Users.findByPk(id);
     if (!user) throw new SyntaxError("Can't find any user");
 
@@ -25,9 +25,8 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  const { name, surname, address, userPhone } = req.body;
   try {
-    const { name, surname, address, userPhone } = req.body;
-
     const newUser = await Users.create({
       name, surname, address, user_phone: userPhone
     }, { fields: ['name', 'surname', 'address', 'user_phone'] });
@@ -39,9 +38,9 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, surname, address, userPhone } = req.body;
   try {
-    const { id } = req.params;
-    const { name, surname, address, userPhone } = req.body;
     const user = await Users.update({
       name, surname, address, user_phone: userPhone
     }, { where: { id } });
@@ -54,8 +53,8 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const user = await Users.destroy({ where: { id } });
     if (!user) throw new SyntaxError("Can't find this user");
 

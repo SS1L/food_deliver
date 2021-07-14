@@ -15,8 +15,8 @@ const getDishes = async (req, res) => {
 
 // search by restaurant id?
 const getDishesId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const dishes = await Dish.findByPk(id);
     if (!dishes.length) throw new SyntaxError("Can't find any information");
 
@@ -27,8 +27,8 @@ const getDishesId = async (req, res) => {
 };
 
 const createDish = async (req, res) => {
+  const { restaurantId, name, describe, price } = req.body;
   try {
-    const { restaurantId, name, describe, price } = req.body;
     const findRestaurant = await Restaurant.findByPk(restaurantId);
     if (!findRestaurant) throw new SyntaxError("Can't find restaurant");
     const newDish = await Dish.create({
@@ -42,9 +42,9 @@ const createDish = async (req, res) => {
 };
 
 const updateDish = async (req, res) => {
+  const { id } = req.params;
+  const { name, describe, price } = req.body;
   try {
-    const { id } = req.params;
-    const { name, describe, price } = req.body;
     const dish = await Dish.update({
       name, describe, price
     }, { where: { id } });
@@ -57,8 +57,8 @@ const updateDish = async (req, res) => {
 };
 
 const deleteDish = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const dish = Dish.destroy({ where: { id } });
     if (!dish) throw new SyntaxError("Can't find any dish");
 

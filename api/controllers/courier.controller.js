@@ -12,9 +12,8 @@ const getCouriers = async (req, res) => {
 };
 
 const getCouriersId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     const courier = await Couriers.findOne({ where: { id } });
     if (!courier) throw new SyntaxError("Can't find this courier");
 
@@ -25,9 +24,8 @@ const getCouriersId = async (req, res) => {
 };
 
 const createNewCourier = async (req, res) => {
+  const { name, surname, courierPhone } = req.body;
   try {
-    const { name, surname, courierPhone } = req.body;
-
     const newCourier = await Couriers.create({
       name, surname, courier_phone: courierPhone
     }, { fields: ['name', 'surname', 'courier_phone'] });
@@ -39,10 +37,9 @@ const createNewCourier = async (req, res) => {
 };
 
 const updateCourier = async (req, res) => {
+  const { id } = req.params;
+  const { name, surname, courierPhone } = req.body;
   try {
-    const { id } = req.params;
-    const { name, surname, courierPhone } = req.body;
-
     const changeCourier = await Couriers.update({
       name, surname, courier_phone: courierPhone
     }, { where: { id } });
@@ -55,9 +52,8 @@ const updateCourier = async (req, res) => {
 };
 
 const deleteCourier = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     const courier = await Couriers.destroy({ where: { id } });
     if (!courier) throw new SyntaxError("Can't find this courier");
 

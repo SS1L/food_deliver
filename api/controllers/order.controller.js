@@ -14,9 +14,8 @@ const getOrders = async (req, res) => {
 };
 
 const getOrderId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     const order = await Orders.findAll({
       include: {
         model: orderDish,
@@ -44,10 +43,9 @@ const getAvailableOrder = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
+  const { userId, restaurantId, dishId } = req.body;
+  let totalPrice = 0;
   try {
-    const { userId, restaurantId, dishId } = req.body;
-    let totalPrice = 0;
-
     const dish = await Dish.findAll({ where: { id: dishId } });
     dish.forEach((element) => {
       if (restaurantId !== element.restaurant_id) throw new SyntaxError('Something went wrong');
@@ -78,9 +76,9 @@ const createOrder = async (req, res) => {
 };
 
 const confirmOrder = async (req, res) => {
+  const { id } = req.params;
+  const { courierId } = req.body;
   try {
-    const { id } = req.params;
-    const { courierId } = req.body;
     await Orders.update(
       { courier_id: courierId },
       { where: { id } },
@@ -106,8 +104,8 @@ const deliveredOrder = async (req, res) => {
 };
 
 const deleteOrder = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const order = await Orders.destroy({ where: { id } });
     if (!order) throw new SyntaxError("Can't find any order");
 
