@@ -14,6 +14,14 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
+      order_time: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      order_delivered: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       restaurant_id: {
         type: Sequelize.INTEGER,
         references: {

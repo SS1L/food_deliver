@@ -1,7 +1,5 @@
 const Orders = require('../models/order.model');
 const User = require('../models/users.model');
-const Restaurant = require('../models/restaurant.model');
-const Courier = require('../models/couriers.model');
 const Dish = require('../models/dishes.model');
 const orderDish = require('../models/orderDishes.model');
 
@@ -60,7 +58,12 @@ const createOrder = async (req, res) => {
     if (!user) throw new SyntaxError("Can't find this user");
 
     const order = await Orders.create(
-      { user_id: userId, restaurant_id: restaurantId, total_price: totalPrice.toFixed(2) }
+      {
+        user_id: userId,
+        restaurant_id: restaurantId,
+        total_price: totalPrice.toFixed(2),
+        order_time: new Date(),
+      },
     );
     if (!order.dataValues) throw new SyntaxError('Someting went wrong');
     // need fix
@@ -80,10 +83,23 @@ const confirmOrder = async (req, res) => {
     const { courierId } = req.body;
     await Orders.update(
       { courier_id: courierId },
-      { where: { id } }
+      { where: { id } },
     );
 
     res.status(200).json({ message: 'Order confimed' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
+
+const deliveredOrder = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Orders.update(
+      { order_delivered: new Date() },
+      { where: { id } },
+    );
+    res.status(200).json({ message: 'Order delivered' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -107,5 +123,6 @@ module.exports = {
   getAvailableOrder,
   confirmOrder,
   createOrder,
+  deliveredOrder,
   deleteOrder,
 };
