@@ -1,6 +1,8 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
+const bcrypt = require('bcrypt');
 const Users = require('../models/users.model');
+require('dotenv').config();
 
 const getUsers = async (req, res) => {
   try {
@@ -25,17 +27,29 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { name, surname, address, userPhone } = req.body;
+  const { name, surname, address, userPhone, email, password } = req.body;
   try {
+    console.log(req.body);
     const newUser = await Users.create({
-      name, surname, address, user_phone: userPhone
-    }, { fields: ['name', 'surname', 'address', 'user_phone'] });
+      name,
+      surname,
+      address,
+      user_phone: userPhone,
+      email,
+      password: await bcrypt.hash(password, parseInt(process.env.SALT, 10))
+    }, { fields: ['name', 'surname', 'address', 'user_phone', 'email', 'password'] });
 
     res.status(200).json({ message: 'User created', data: newUser });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
+
+// const loginUser = async (req, res) => {
+//   try{
+//   } catch(e) {
+//   }
+// };
 
 const updateUser = async (req, res) => {
   const { id } = req.params;

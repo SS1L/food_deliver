@@ -10,11 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "babel-register": "^6.26.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validation": "^3.0.8",
     "express-validator": "^6.12.0",
+    "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.4",
