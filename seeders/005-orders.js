@@ -18,6 +18,7 @@ module.exports = {
     return queryInterface.bulkInsert(tableName, [
       {
         total_price: 25.00,
+        status: 'Confirmed',
         order_time: new Date(),
         restaurant_id: 5,
         user_id: 2,
@@ -25,6 +26,7 @@ module.exports = {
       },
       {
         total_price: 10.00,
+        status: 'Confirmed',
         order_time: new Date(),
         restaurant_id: 1,
         user_id: 1,
@@ -32,6 +34,7 @@ module.exports = {
       },
       {
         total_price: 25.00,
+        status: 'Confirmed',
         order_time: new Date(),
         restaurant_id: 2,
         user_id: 5,
@@ -39,6 +42,7 @@ module.exports = {
       },
       {
         total_price: 5.00,
+        status: 'Confirmed',
         order_time: new Date(),
         restaurant_id: 3,
         user_id: 3,
@@ -46,6 +50,7 @@ module.exports = {
       },
       {
         total_price: 22.00,
+        status: 'Confirmed',
         order_time: new Date(),
         restaurant_id: 4,
         user_id: 4,

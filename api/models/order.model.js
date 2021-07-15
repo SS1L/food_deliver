@@ -12,6 +12,10 @@ const Order = sequelize.define('orders', {
     type: Sequelize.DECIMAL(10, 2),
     allowNull: false,
   },
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   order_time: {
     type: Sequelize.DATE,
     allowNull: false,

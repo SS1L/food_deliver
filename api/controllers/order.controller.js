@@ -58,6 +58,7 @@ const createOrder = async (req, res) => {
     const order = await Orders.create(
       {
         user_id: userId,
+        status: 'Confirmed',
         restaurant_id: restaurantId,
         total_price: totalPrice.toFixed(2),
         order_time: new Date(),
@@ -80,7 +81,7 @@ const confirmOrder = async (req, res) => {
   const { courierId } = req.body;
   try {
     await Orders.update(
-      { courier_id: courierId },
+      { courier_id: courierId, status: 'In way' },
       { where: { id } },
     );
 
@@ -94,7 +95,7 @@ const deliveredOrder = async (req, res) => {
   const { id } = req.params;
   try {
     await Orders.update(
-      { order_delivered: new Date() },
+      { order_delivered: new Date(), status: 'Delivered' },
       { where: { id } },
     );
     res.status(200).json({ message: 'Order delivered' });

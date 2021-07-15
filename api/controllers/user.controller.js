@@ -29,7 +29,6 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
   const { name, surname, address, userPhone, email, password } = req.body;
   try {
-    console.log(req.body);
     const newUser = await Users.create({
       name,
       surname,
@@ -44,12 +43,6 @@ const createUser = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
-
-// const loginUser = async (req, res) => {
-//   try{
-//   } catch(e) {
-//   }
-// };
 
 const updateUser = async (req, res) => {
   const { id } = req.params;
