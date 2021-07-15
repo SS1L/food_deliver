@@ -2,6 +2,7 @@
 /* eslint-disable comma-dangle */
 const bcrypt = require('bcrypt');
 const Users = require('../models/users.model');
+const destroyUser = require('../services/destoryUser');
 require('dotenv').config();
 
 const getUsers = async (req, res) => {
@@ -62,8 +63,10 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await Users.destroy({ where: { id } });
+    const user = await Users.findByPk(id);
     if (!user) throw new SyntaxError("Can't find this user");
+    await destroyUser(id);
+    await Users.destroy({ where: { id } });
 
     res.status(200).json({ message: 'User deleted' });
   } catch (e) {

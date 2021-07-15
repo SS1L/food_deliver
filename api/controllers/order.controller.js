@@ -23,7 +23,7 @@ const getOrderId = async (req, res) => {
         right: true,
       },
     });
-    if (!order) throw new SyntaxError("Can't find this order");
+    if (!order.length) throw new SyntaxError("Can't find this order");
 
     res.json({ data: order });
   } catch (e) {
@@ -34,7 +34,7 @@ const getOrderId = async (req, res) => {
 const getAvailableOrder = async (req, res) => {
   try {
     const order = await Orders.findAll({ where: { courier_id: null } });
-    if (!order) throw new SyntaxError("Can't find any order");
+    if (!order.length) throw new SyntaxError("Can't find any order");
 
     res.status(200).json({ data: order });
   } catch (e) {
@@ -42,6 +42,7 @@ const getAvailableOrder = async (req, res) => {
   }
 };
 
+// need fix
 const createOrder = async (req, res) => {
   const { userId, restaurantId, dishId } = req.body;
   let totalPrice = 0;
@@ -76,6 +77,7 @@ const createOrder = async (req, res) => {
   }
 };
 
+// need fix
 const confirmOrder = async (req, res) => {
   const { id } = req.params;
   const { courierId } = req.body;
@@ -104,6 +106,7 @@ const deliveredOrder = async (req, res) => {
   }
 };
 
+// need fix
 const deleteOrder = async (req, res) => {
   const { id } = req.params;
   try {

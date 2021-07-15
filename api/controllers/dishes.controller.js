@@ -13,12 +13,11 @@ const getDishes = async (req, res) => {
   }
 };
 
-// search by restaurant id?
 const getDishesId = async (req, res) => {
   const { id } = req.params;
   try {
     const dishes = await Dish.findByPk(id);
-    if (!dishes.length) throw new SyntaxError("Can't find any information");
+    if (!dishes) throw new SyntaxError("Can't find any information");
 
     res.status(200).json(dishes);
   } catch (e) {
@@ -50,16 +49,18 @@ const updateDish = async (req, res) => {
     }, { where: { id } });
     if (dish[0] === 0) throw new SyntaxError("Can't find any dish");
 
-    res.status(200).json({ data: dish });
+    res.status(200).json({ message: 'Dishes update' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
 
+// need fix;
 const deleteDish = async (req, res) => {
   const { id } = req.params;
   try {
-    const dish = Dish.destroy({ where: { id } });
+    const dish = await Dish.destroy({ where: { id } });
+    console.log(dish);
     if (!dish) throw new SyntaxError("Can't find any dish");
 
     res.status(200).json({ message: 'Dish deleted' });
