@@ -42,7 +42,6 @@ const getAvailableOrder = async (req, res) => {
   }
 };
 
-// need fix
 const createOrder = async (req, res) => {
   const { userId, restaurantId, dishId } = req.body;
   let totalPrice = 0;
@@ -66,12 +65,12 @@ const createOrder = async (req, res) => {
       },
     );
     if (!order.dataValues) throw new SyntaxError('Someting went wrong');
-    // need fix
-    for (let i = 0; i < dishId.length; i++) {
-      await orderDish.create({ order_id: order.dataValues.id, dish_id: dishId[i]});
-    }
 
-    res.status(200).json({ data: order });
+    dishId.forEach(async (id) => {
+      await orderDish.create({ order_id: order.dataValues.id, dish_id: id });
+    });
+
+    res.status(200).json({ message: 'Order created', data: order });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
