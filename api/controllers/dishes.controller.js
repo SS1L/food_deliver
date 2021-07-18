@@ -17,11 +17,11 @@ const getDishesId = async (req, res) => {
   const { id } = req.params;
   try {
     const dishes = await Dish.findByPk(id);
-    if (!dishes) throw new SyntaxError("Can't find any information");
+    if (!dishes) throw new Error("Can't find any information");
 
     res.status(200).json(dishes);
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -29,14 +29,14 @@ const createDish = async (req, res) => {
   const { restaurantId, name, describe, price } = req.body;
   try {
     const findRestaurant = await Restaurant.findByPk(restaurantId);
-    if (!findRestaurant) throw new SyntaxError("Can't find restaurant");
+    if (!findRestaurant) throw new Error("Can't find restaurant");
     const newDish = await Dish.create({
       name, describe, price, restaurant_id: restaurantId
     }, { fields: ['name', 'describe', 'price', 'restaurant_id'] });
 
-    res.status(200).json({ data: newDish });
+    res.status(201).json({ data: newDish });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -47,11 +47,11 @@ const updateDish = async (req, res) => {
     const dish = await Dish.update({
       name, describe, price
     }, { where: { id } });
-    if (dish[0] === 0) throw new SyntaxError("Can't find any dish");
+    if (dish[0] === 0) throw new Error("Can't find any dish");
 
     res.status(200).json({ message: 'Dishes update' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -60,12 +60,11 @@ const deleteDish = async (req, res) => {
   const { id } = req.params;
   try {
     const dish = await Dish.destroy({ where: { id } });
-    console.log(dish);
-    if (!dish) throw new SyntaxError("Can't find any dish");
+    if (!dish) throw new Error("Can't find any dish");
 
     res.status(200).json({ message: 'Dish deleted' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 

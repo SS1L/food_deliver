@@ -28,11 +28,11 @@ const getRestaurantById = async (req, res) => {
   const { id } = req.params;
   try {
     const restaurantInfo = await Restaurant.findByPk(id);
-    if (!restaurantInfo) throw new SyntaxError("Can't find any restaurant");
+    if (!restaurantInfo) throw new Error("Can't find any restaurant");
 
     res.status(200).json({ data: restaurantInfo });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -44,7 +44,7 @@ const createNewRestaurant = async (req, res) => {
     },
     { fields: ['name', 'describe', 'address', 'cousine'] });
 
-    res.status(200).json({ message: 'New restaurant created', data: newRestaurant });
+    res.status(201).json({ message: 'New restaurant created', data: newRestaurant });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -58,11 +58,11 @@ const updateRestaurant = async (req, res) => {
       name, describe, address, cousine
     },
     { where: { id } });
-    if (restaurant[0] === 0) throw new SyntaxError("Can't find this id");
+    if (restaurant[0] === 0) throw new Error("Can't find this id");
 
     res.status(200).json({ message: 'Restaurant updated' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -71,11 +71,11 @@ const deleteRestaurant = async (req, res) => {
   const { id } = req.params;
   try {
     const restaurant = await Restaurant.destroy({ where: { id } });
-    if (!restaurant) throw new SyntaxError("Can't delete this restaurant");
+    if (!restaurant) throw new Error("Can't delete this restaurant");
 
     res.status(200).json({ message: 'Restaurant deleted' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 

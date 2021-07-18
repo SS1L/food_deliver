@@ -23,22 +23,22 @@ const getOrderId = async (req, res) => {
         right: true,
       },
     });
-    if (!order.length) throw new SyntaxError("Can't find this order");
+    if (!order.length) throw new Error("Can't find this order");
 
-    res.json({ data: order });
+    res.status(200).json({ data: order });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
 const getAvailableOrder = async (req, res) => {
   try {
     const order = await Orders.findAll({ where: { courier_id: null } });
-    if (!order.length) throw new SyntaxError("Can't find any order");
+    if (!order.length) throw new Error("Can't find any order");
 
     res.status(200).json({ data: order });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -66,11 +66,11 @@ const createOrder = async (req, res) => {
     );
     if (!order.dataValues) throw new SyntaxError('Someting went wrong');
 
-    dishId.forEach(async (id) => {
+    Promise.all(dishId.map(async (id) => {
       await orderDish.create({ order_id: order.dataValues.id, dish_id: id });
-    });
+    }));
 
-    res.status(200).json({ message: 'Order created', data: order });
+    res.status(201).json({ message: 'Order created', data: order });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -110,11 +110,11 @@ const deleteOrder = async (req, res) => {
   try {
     await orderDish.destroy({ where: { order_id: id } });
     const order = await Orders.destroy({ where: { id } });
-    if (!order) throw new SyntaxError("Can't find any order");
+    if (!order) throw new Error("Can't find any order");
 
     res.status(200).json({ message: 'Order deleted' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
