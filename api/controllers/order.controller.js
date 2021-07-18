@@ -105,10 +105,10 @@ const deliveredOrder = async (req, res) => {
   }
 };
 
-// need fix
 const deleteOrder = async (req, res) => {
   const { id } = req.params;
   try {
+    await orderDish.destroy({ where: { order_id: id } });
     const order = await Orders.destroy({ where: { id } });
     if (!order) throw new SyntaxError("Can't find any order");
 

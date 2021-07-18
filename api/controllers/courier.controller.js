@@ -63,21 +63,10 @@ const deleteCourier = async (req, res) => {
   }
 };
 
-// need fix
-const getCourierOrder = async (req, res) => {
-  try {
-    const { id } = req.params;
-    res.json('all work');
-  } catch (e) {
-    res.json({ error: e.message });
-  }
-};
-
 module.exports = {
   getCouriers,
   getCouriersId,
   createNewCourier,
   updateCourier,
   deleteCourier,
-  getCourierOrder,
 };
