@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db/database');
-const Order = require('./order.model');
 
 const orderDishes = sequelize.define('order_dishes', {
   id: {

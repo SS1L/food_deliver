@@ -1,6 +1,8 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
 const Dish = require('../models/dishes.model');
+const Order = require('../models/order.model');
+const orderDishes = require('../models/orderDishes.model');
 const Restaurant = require('../models/restaurant.model');
 
 const getDishes = async (req, res) => {
@@ -55,10 +57,15 @@ const updateDish = async (req, res) => {
   }
 };
 
-// need fix;
 const deleteDish = async (req, res) => {
   const { id } = req.params;
   try {
+    const ordered = await orderDishes.findAll({ where: { dish_id: id } });
+    Promise.all(ordered.map(async (dishId) => {
+      await orderDishes.destroy({ where: { dish_id: dishId.dataValues.dish_id } });
+      await Order.destroy({ where: { id: dishId.dataValues.order_id } });
+    }));
+
     const dish = await Dish.destroy({ where: { id } });
     if (!dish) throw new Error("Can't find any dish");
 

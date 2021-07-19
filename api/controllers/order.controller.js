@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Orders = require('../models/order.model');
 const User = require('../models/users.model');
 const Dish = require('../models/dishes.model');
@@ -53,7 +54,7 @@ const createOrder = async (req, res) => {
     });
 
     const user = await User.findByPk(userId);
-    if (!user) throw new SyntaxError("Can't find this user");
+    if (!user) throw new Error("Can't find this user");
 
     const order = await Orders.create(
       {
@@ -61,7 +62,7 @@ const createOrder = async (req, res) => {
         status: 'Confirmed',
         restaurant_id: restaurantId,
         total_price: totalPrice.toFixed(2),
-        order_time: new Date(),
+        order_time: moment().format('DD MMMM YYYY, H:m:s'),
       },
     );
     if (!order.dataValues) throw new SyntaxError('Someting went wrong');
@@ -72,7 +73,7 @@ const createOrder = async (req, res) => {
 
     res.status(201).json({ message: 'Order created', data: order });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(404).json({ error: e.message });
   }
 };
 
@@ -96,7 +97,7 @@ const deliveredOrder = async (req, res) => {
   const { id } = req.params;
   try {
     await Orders.update(
-      { order_delivered: new Date(), status: 'Delivered' },
+      { order_delivered: moment().format('DD MMMM YYYY, H:m:s'), status: 'Delivered' },
       { where: { id } },
     );
     res.status(200).json({ message: 'Order delivered' });

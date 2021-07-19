@@ -66,7 +66,6 @@ const updateRestaurant = async (req, res) => {
   }
 };
 
-// need fix, also need delete dish from dishes;
 const deleteRestaurant = async (req, res) => {
   const { id } = req.params;
   try {

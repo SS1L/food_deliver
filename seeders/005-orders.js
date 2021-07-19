@@ -1,17 +1,11 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
+const moment = require('moment');
+
 const tableName = 'orders';
 
-const dateObj = new Date();
-const year = dateObj.getUTCFullYear();
-const month = dateObj.getUTCMonth() + 1;
-const day = dateObj.getUTCDay();
-const hours = dateObj.getHours();
-const minute = dateObj.getMinutes();
-const second = dateObj.getSeconds();
-
-const newDate = `${day}\\${month}\\${year}  ${hours}:${minute}:${second}`;
+const orderTime = moment().format('DD MMMM YYYY, H:m:s');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -19,7 +13,7 @@ module.exports = {
       {
         total_price: 25.00,
         status: 'Confirmed',
-        order_time: new Date(),
+        order_time: orderTime,
         restaurant_id: 5,
         user_id: 2,
         courier_id: 1,
@@ -27,7 +21,7 @@ module.exports = {
       {
         total_price: 10.00,
         status: 'Confirmed',
-        order_time: new Date(),
+        order_time: orderTime,
         restaurant_id: 1,
         user_id: 1,
         courier_id: 4,
@@ -35,7 +29,7 @@ module.exports = {
       {
         total_price: 25.00,
         status: 'Confirmed',
-        order_time: new Date(),
+        order_time: orderTime,
         restaurant_id: 2,
         user_id: 5,
         courier_id: 2,
@@ -43,7 +37,7 @@ module.exports = {
       {
         total_price: 5.00,
         status: 'Confirmed',
-        order_time: new Date(),
+        order_time: orderTime,
         restaurant_id: 3,
         user_id: 3,
         courier_id: 1,
@@ -51,7 +45,7 @@ module.exports = {
       {
         total_price: 22.00,
         status: 'Confirmed',
-        order_time: new Date(),
+        order_time: orderTime,
         restaurant_id: 4,
         user_id: 4,
         courier_id: 3,
