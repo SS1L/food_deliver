@@ -2,14 +2,22 @@
   "name": "food-deliver-back",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "api/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon api/app.js",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+    "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo:all",
+    "db:seed": "./node_modules/.bin/sequelize db:seed:all",
+    "db:seed:undo": "./node_modules/.bin/sequelize db:seed:undo:all"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SS1L/food_deliver.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-register": "^6.26.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
@@ -26,6 +34,6 @@
     "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
-    "sequelize-cli": "^6.2.0"
+    "nodemon": "^2.0.12"
   }
 }
