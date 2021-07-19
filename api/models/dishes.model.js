@@ -20,7 +20,7 @@ const Dish = sequelize.define('dishes', {
     allowNull: false,
   },
   price: {
-    type: Sequelize.STRING,
+    type: Sequelize.DECIMAL,
     allowNull: false,
   },
 }, {
