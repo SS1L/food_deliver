@@ -2,6 +2,7 @@
 /* eslint-disable comma-dangle */
 const Restaurant = require('../models/restaurant.model');
 
+// need fix
 const getRestaurants = async (req, res) => {
   try {
     const restaurantsInfo = await Restaurant.findAll({ include: { all: true } });
@@ -12,7 +13,7 @@ const getRestaurants = async (req, res) => {
   }
 };
 
-// need fix
+// delete this shit;
 const getRestaurantsCuisine = async (req, res) => {
   const { cousine } = req.body;
   try {
