@@ -2,24 +2,18 @@
 /* eslint-disable comma-dangle */
 const Restaurant = require('../models/restaurant.model');
 
-// need fix
 const getRestaurants = async (req, res) => {
-  try {
-    const restaurantsInfo = await Restaurant.findAll({ include: { all: true } });
-
-    res.status(200).json({ data: restaurantsInfo });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-};
-
-// delete this shit;
-const getRestaurantsCuisine = async (req, res) => {
   const { cousine } = req.body;
   try {
-    const restaurantsInfo = await Restaurant.findAll({ where: { cousine } });
+    const restaurantInfo = await Restaurant.findAll({ include: { all: true } });
+    if (!cousine) {
+      return res.status(200).json({ data: restaurantInfo });
+    }
 
-    res.status(200).json({ data: restaurantsInfo });
+    const cousineInfo = await Restaurant.findAll({ where: { cousine } });
+    if (!cousineInfo.length) return res.status(200).json({ data: restaurantInfo });
+
+    res.status(200).json({ data: cousineInfo });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -81,7 +75,6 @@ const deleteRestaurant = async (req, res) => {
 
 module.exports = {
   getRestaurants,
-  getRestaurantsCuisine,
   getRestaurantById,
   createNewRestaurant,
   updateRestaurant,
