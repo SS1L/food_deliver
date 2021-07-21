@@ -56,7 +56,7 @@ const createOrder = async (req, res) => {
   try {
     const dish = await Dish.findAll({ where: { id: dishId } });
     dish.forEach((element) => {
-      if (restaurantId !== element.restaurant_id) throw new SyntaxError('Something went wrong');
+      if (restaurantId !== element.restaurant_id) throw new Error('Something went wrong');
       totalPrice += +element.price;
     });
 
@@ -72,7 +72,7 @@ const createOrder = async (req, res) => {
         order_time: moment().format('DD MMMM YYYY, H:m:s'),
       },
     );
-    if (!order.dataValues) throw new SyntaxError('Someting went wrong');
+    if (!order.dataValues) throw new Error('Someting went wrong');
 
     Promise.all(dishId.map(async (id) => {
       await orderDish.create({ order_id: order.dataValues.id, dish_id: id });
